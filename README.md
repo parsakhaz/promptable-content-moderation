@@ -95,7 +95,7 @@ python app.py
 3. Use the interface to:
    - Upload your video file
    - Specify content to moderate (e.g., "face", "cigarette", "gun")
-   - Choose redaction style (default: censor)
+   - Choose redaction style (default: obfuscated-pixel)
    - OPTIONAL: Configure advanced settings
      - Processing speed/quality
      - Grid size for detection

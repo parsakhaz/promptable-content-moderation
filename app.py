@@ -307,17 +307,17 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                     video_input = gr.Video(label="Upload Video")
 
                     detect_input = gr.Textbox(
-                        label="What to Detect",
-                        placeholder="e.g. face, logo, text, person, car, dog, etc.",
+                        label="What to Modereate",
+                        placeholder="e.g. face, cigarette, gun, etc.",
                         value="face",
                         info="Moondream can detect anything that you can describe in natural language",
                     )
 
                     gr.Examples(
                         examples=[
+                            ["examples/cig.mp4", "cigarette"],
+                            ["examples/gun.mp4", "gun"],
                             ["examples/homealone.mp4", "face"],
-                            ["examples/soccer.mp4", "ball"],
-                            ["examples/rally.mp4", "license plate"],
                         ],
                         inputs=[video_input, detect_input],
                         label="Try these examples",
@@ -328,7 +328,7 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                     with gr.Accordion("Advanced Settings", open=False):
                         box_style_input = gr.Radio(
                             choices=["censor", "bounding-box", "hitmarker", "sam", "sam-fast", "fuzzy-blur", "pixelated-blur", "intense-pixelated-blur", "obfuscated-pixel"],
-                            value="censor",
+                            value="obfuscated-pixel",
                             label="Visualization Style",
                             info="Choose how to display detections: censor (black boxes), bounding-box (red boxes with labels), hitmarker (COD-style markers), sam (precise segmentation), sam-fast (faster but less precise segmentation), fuzzy-blur (Gaussian blur), pixelated-blur (pixelated with blur), obfuscated-pixel (advanced pixelation with neighborhood averaging)",
                         )
@@ -425,37 +425,29 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                 with gr.Column():
                     plot1 = gr.Image(
                         label="Detections Per Frame",
-                        # caption="Track the frequency of detections across frames. Spikes indicate frames with high concentration of detected content, useful for identifying problematic scenes."
                     )
                     plot2 = gr.Image(
                         label="Detection Areas Distribution",
-                        # caption="Shows how much screen space detections typically occupy. Large areas might indicate prominent/obvious content, while small areas could be subtle elements."
                     )
                     plot5 = gr.Image(
                         label="Detection Density Timeline",
-                        # caption="Visualizes when detections occur most frequently throughout the video duration. Helps identify segments that require closer review."
                     )
                     plot6 = gr.Image(
                         label="Screen Region Analysis",
-                        # caption="Maps where detections commonly appear on screen (3x3 grid). Useful for identifying patterns in content placement, like watermarks or overlays."
                     )
                 
                 with gr.Column():
                     plot3 = gr.Image(
                         label="Average Detection Area Over Time",
-                        # caption="Shows how detection sizes change throughout the video. Sudden changes might indicate transitions or different types of content."
                     )
                     plot4 = gr.Image(
                         label="Detection Center Heatmap",
-                        # caption="Reveals hotspots where detections frequently occur. Helps identify if content is concentrated in specific screen areas."
                     )
                     plot7 = gr.Image(
                         label="Detection Size Categories",
-                        # caption="Categorizes detections by their relative size. Large detections might be prominent/foreground content, while small ones could be background elements."
                     )
                     plot8 = gr.Image(
                         label="Temporal Pattern Analysis",
-                        # caption="Shows the timing between consecutive detections. Regular patterns might indicate systematic content placement or recurring elements."
                     )
             
             stats_output = gr.Textbox(
@@ -466,40 +458,40 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                 interactive=False
             )
 
-        with gr.Tab("Video Visualizations"):
-            gr.Markdown("# Real-time Detection Visualization")
-            gr.Markdown(
-                """
-            Watch the detection patterns unfold in real-time. Choose from:
-            - Timeline: Shows number of detections over time
-            - Gauge: Simple yes/no indicator for current frame detections
-            """
-            )
+        # with gr.Tab("Video Visualizations"):
+        #     gr.Markdown("# Real-time Detection Visualization")
+        #     gr.Markdown(
+        #         """
+        #     Watch the detection patterns unfold in real-time. Choose from:
+        #     - Timeline: Shows number of detections over time
+        #     - Gauge: Simple yes/no indicator for current frame detections
+        #     """
+        #     )
             
-            with gr.Row():
-                json_input_realtime = gr.File(
-                    label="Upload Detection Data (JSON)",
-                    file_types=[".json"],
-                )
-                viz_style = gr.Radio(
-                    choices=["timeline", "gauge"],
-                    value="timeline",
-                    label="Visualization Style",
-                    info="Choose between timeline view or simple gauge indicator"
-                )
-                visualize_btn = gr.Button("Visualize", variant="primary")
+        #     with gr.Row():
+        #         json_input_realtime = gr.File(
+        #             label="Upload Detection Data (JSON)",
+        #             file_types=[".json"],
+        #         )
+        #         viz_style = gr.Radio(
+        #             choices=["timeline", "gauge"],
+        #             value="timeline",
+        #             label="Visualization Style",
+        #             info="Choose between timeline view or simple gauge indicator"
+        #         )
+        #         visualize_btn = gr.Button("Visualize", variant="primary")
 
-            with gr.Row():
-                video_visualization = gr.Video(
-                    label="Detection Visualization",
-                    interactive=False
-                )
-                stats_realtime = gr.Textbox(
-                    label="Video Statistics",
-                    lines=6,
-                    max_lines=8,
-                    interactive=False
-                )
+        #     with gr.Row():
+        #         video_visualization = gr.Video(
+        #             label="Detection Visualization",
+        #             interactive=False
+        #         )
+        #         stats_realtime = gr.Textbox(
+        #             label="Video Statistics",
+        #             lines=6,
+        #             max_lines=8,
+        #             interactive=False
+        #         )
 
     # Event handlers
     process_outputs = process_btn.click(
@@ -532,11 +524,11 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
     )
 
     # Video visualization button
-    visualize_btn.click(
-        fn=lambda json_file, style: create_video_visualization(json_file.name if json_file else None, style),
-        inputs=[json_input_realtime, viz_style],
-        outputs=[video_visualization, stats_realtime],
-    )
+    # visualize_btn.click(
+    #     fn=lambda json_file, style: create_video_visualization(json_file.name if json_file else None, style),
+    #     inputs=[json_input_realtime, viz_style],
+    #     outputs=[video_visualization, stats_realtime],
+    # )
 
 if __name__ == "__main__":
     app.launch(share=True)
