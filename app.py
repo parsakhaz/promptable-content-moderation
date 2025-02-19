@@ -318,6 +318,7 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                             ["examples/cig.mp4", "cigarette"],
                             ["examples/gun.mp4", "gun"],
                             ["examples/homealone.mp4", "face"],
+                            ["examples/conf.mp4", "confederate flag"],
                         ],
                         inputs=[video_input, detect_input],
                         label="Try these examples",
