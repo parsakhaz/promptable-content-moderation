@@ -2,7 +2,6 @@
 
 Welcome to the future of content moderation with Moondream 2B, a powerful and lightweight vision-language model that enables detection and moderation of video content using natural language prompts.
 
-
 [Try it now.](https://huggingface.co/spaces/moondream/content-moderation)
 
 ## Features
@@ -55,12 +54,6 @@ Installation by platform:
 - Windows:
   - Download FFmpeg from [ffmpeg.org](https://ffmpeg.org/download.html)
   - Follow [libvips Windows installation guide](https://docs.moondream.ai/quick-start)
-
-### Hardware Requirements
-
-- GPU recommended for faster processing (CUDA compatible)
-- Minimum 8GB RAM
-- Storage space for temporary files and output videos
 
 ## Installation
 
