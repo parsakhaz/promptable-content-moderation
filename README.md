@@ -20,6 +20,14 @@ Welcome to the future of content moderation. This tool uses Moondream 2B, a powe
 
 > This recipe is meant to be used through Gradio
 
+## Demo
+
+| Demo |
+|------|
+| ![Demo](./examples/clip-cig.gif)     |
+| ![Demo](./examples/clip-gu.gif)      |
+| ![Demo](./examples/clip-conflag.gif) |
+
 ## Requirements
 
 ### Python Dependencies
