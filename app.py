@@ -295,9 +295,9 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
             gr.Markdown("# Promptable Content Moderation with Moondream")
             gr.Markdown(
                 """
-            [Moondream 2B](https://github.com/vikhyat/moondream) is a lightweight vision model that detects and visualizes objects in videos. It can identify objects, people, text and more.
+            Powered by [Moondream 2B](https://github.com/vikhyat/moondream).
 
-            Upload a video and specify what to detect. The app will process each frame and apply your chosen visualization style. For help, join the [Moondream Discord](https://discord.com/invite/tRUdpjDQfH).
+            Upload a video and specify what to moderate. The app will process each frame and moderate any visual content that matches the prompt. For help, join the [Moondream Discord](https://discord.com/invite/tRUdpjDQfH).
             """
             )
 
@@ -310,7 +310,7 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                         label="What to Modereate",
                         placeholder="e.g. face, cigarette, gun, etc.",
                         value="face",
-                        info="Moondream can detect anything that you can describe in natural language",
+                        info="Moondream can moderate anything that you can describe in natural language",
                     )
 
                     gr.Examples(
@@ -331,7 +331,7 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                             choices=["censor", "bounding-box", "hitmarker", "sam", "sam-fast", "fuzzy-blur", "pixelated-blur", "intense-pixelated-blur", "obfuscated-pixel"],
                             value="obfuscated-pixel",
                             label="Visualization Style",
-                            info="Choose how to display detections: censor (black boxes), bounding-box (red boxes with labels), hitmarker (COD-style markers), sam (precise segmentation), sam-fast (faster but less precise segmentation), fuzzy-blur (Gaussian blur), pixelated-blur (pixelated with blur), obfuscated-pixel (advanced pixelation with neighborhood averaging)",
+                            info="Choose how to display moderations: censor (black boxes), bounding-box (red boxes with labels), hitmarker (COD-style markers), sam (precise segmentation), sam-fast (faster but less precise segmentation), fuzzy-blur (Gaussian blur), pixelated-blur (pixelated with blur), obfuscated-pixel (advanced pixelation with neighborhood averaging)",
                         )
                         preset_input = gr.Dropdown(
                             choices=[
@@ -397,7 +397,7 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                     ### Links:
                     - [GitHub Repository](https://github.com/vikhyat/moondream)
                     - [Hugging Face](https://huggingface.co/vikhyatk/moondream2)
-                    - [Python Package](https://pypi.org/project/moondream/)
+                    - [Quick Start](https://docs.moondream.ai/quick-start)
                     - [Moondream Recipes](https://docs.moondream.ai/recipes)
                     """
                     )
