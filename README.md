@@ -26,7 +26,7 @@ Welcome to the future of content moderation with Moondream 2B, a powerful and li
 
 ## Examples
 
-| Example Outputs | Prompt                |
+| Prompt | Output |
 |------------------|----------------------|
 | "white cigarette"   | ![Demo](./examples/clip-cig.gif)     |
 | "gun"         | ![Demo](./examples/clip-gu.gif)      |
