@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# import spaces first
+import spaces
 import gradio as gr
 import os
 from main import load_moondream, process_video, load_sam_model
@@ -12,8 +14,6 @@ from PIL import Image
 import pandas as pd
 from video_visualization import create_video_visualization
 
-# import spaces
-import spaces
 # Get absolute path to workspace root
 WORKSPACE_ROOT = os.path.dirname(os.path.abspath(__file__))
 
