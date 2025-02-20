@@ -26,11 +26,11 @@ Welcome to the future of content moderation with Moondream 2B, a powerful and li
 
 ## Examples
 
-| Example Outputs |
-|------|
-| ![Demo](./examples/clip-cig.gif)     |
-| ![Demo](./examples/clip-gu.gif)      |
-| ![Demo](./examples/clip-conflag.gif) |
+| Example Outputs | Prompt                |
+|------------------|----------------------|
+| "white cigarette"   | ![Demo](./examples/clip-cig.gif)     |
+| "gun"         | ![Demo](./examples/clip-gu.gif)      |
+| "confederate flag" | ![Demo](./examples/clip-conflag.gif) |
 
 ## Requirements
 
