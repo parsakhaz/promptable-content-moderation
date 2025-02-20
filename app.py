@@ -13,7 +13,7 @@ import pandas as pd
 from video_visualization import create_video_visualization
 
 # import spaces
-
+import spaces
 # Get absolute path to workspace root
 WORKSPACE_ROOT = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,7 +27,7 @@ print(f"CUDA device: {torch.cuda.get_device_name(torch.cuda.current_device())}")
 model, tokenizer = None, None
 
 # Uncomment for Hugging Face Spaces
-# @spaces.GPU(duration=120)
+@spaces.GPU(duration=120)
 def process_video_file(
     video_file, target_object, box_style, ffmpeg_preset, grid_rows, grid_cols, test_mode, test_duration
 ):

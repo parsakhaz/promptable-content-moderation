@@ -1,3 +1,9 @@
+---
+title: promptable-content-moderation
+app_file: app.py
+sdk: gradio
+sdk_version: 5.16.1
+---
 # Promptable Content Moderation with Moondream
 
 Welcome to the future of content moderation with Moondream 2B, a powerful and lightweight vision-language model that enables detection and moderation of video content using natural language prompts.
