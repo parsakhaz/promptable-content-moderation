@@ -20,9 +20,9 @@ Welcome to the future of content moderation. This tool uses Moondream 2B, a powe
 
 > This recipe is meant to be used through Gradio
 
-## Demo
+## Examples
 
-| Demo |
+| Example Outputs |
 |------|
 | ![Demo](./examples/clip-cig.gif)     |
 | ![Demo](./examples/clip-gu.gif)      |
