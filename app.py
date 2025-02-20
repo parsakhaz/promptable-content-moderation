@@ -311,6 +311,8 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                         info="Moondream can moderate anything that you can describe in natural language",
                     )
 
+                    process_btn = gr.Button("Process Video", variant="primary")
+
                     gr.Examples(
                         examples=[
                             ["examples/cig.mp4", "cigarette"],
@@ -321,8 +323,6 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                         inputs=[video_input, detect_input],
                         label="Try these examples",
                     )
-
-                    process_btn = gr.Button("Process Video", variant="primary")
 
                     with gr.Accordion("Advanced Settings", open=False):
                         box_style_input = gr.Radio(
