@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # import spaces first
-import spaces
+# import spaces
 import gradio as gr
 import os
 from main import load_moondream, process_video, load_sam_model
@@ -27,9 +27,9 @@ print(f"CUDA device: {torch.cuda.get_device_name(torch.cuda.current_device())}")
 model, tokenizer = None, None
 
 # Uncomment for Hugging Face Spaces
-@spaces.GPU(duration=120)
+# @spaces.GPU(duration=120)
 def process_video_file(
-    video_file, target_object, box_style, ffmpeg_preset, grid_rows, grid_cols, test_mode, test_duration
+    video_file, target_object, box_style, ffmpeg_preset, grid_rows, grid_cols, test_mode, test_duration, magnify_factor
 ):
     """Process a video file through the Gradio interface."""
     try:
@@ -326,11 +326,29 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
 
                     with gr.Accordion("Advanced Settings", open=False):
                         box_style_input = gr.Radio(
-                            choices=["censor", "bounding-box", "hitmarker", "sam", "sam-fast", "fuzzy-blur", "pixelated-blur", "intense-pixelated-blur", "obfuscated-pixel"],
+                            choices=["censor", "bounding-box", "hitmarker", "sam", "sam-fast", "fuzzy-blur", "pixelated-blur", "intense-pixelated-blur", "obfuscated-pixel", "magnify"],
                             value="obfuscated-pixel",
                             label="Visualization Style",
-                            info="Choose how to display moderations: censor (black boxes), bounding-box (red boxes with labels), hitmarker (COD-style markers), sam (precise segmentation), sam-fast (faster but less precise segmentation), fuzzy-blur (Gaussian blur), pixelated-blur (pixelated with blur), obfuscated-pixel (advanced pixelation with neighborhood averaging)",
+                            info="Choose how to display moderations: censor (black boxes), bounding-box (red boxes with labels), hitmarker (COD-style markers), sam (precise segmentation), sam-fast (faster but less precise segmentation), fuzzy-blur (Gaussian blur), pixelated-blur (pixelated with blur), obfuscated-pixel (advanced pixelation with neighborhood averaging), magnify (enlarges detected regions)",
                         )
+
+                        magnify_factor = gr.Slider(
+                            minimum=1.1, maximum=5.0, value=2.0, step=0.1,
+                            label="Magnification Factor",
+                            info="How much to enlarge detected regions (only used with magnify style)",
+                            visible=False
+                        )
+
+                        # Show/hide magnification slider based on style selection
+                        def update_magnify_visibility(style):
+                            return gr.update(visible=(style == "magnify"))
+                        
+                        box_style_input.change(
+                            fn=update_magnify_visibility,
+                            inputs=[box_style_input],
+                            outputs=[magnify_factor]
+                        )
+
                         preset_input = gr.Dropdown(
                             choices=[
                                 "ultrafast",
@@ -355,7 +373,7 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
                             )
   
                         test_mode_input = gr.Checkbox(
-                            label="Test Mode (Process first 3 seconds only)",
+                            label="Test Mode (Process first X seconds only)",
                             value=True,
                             info="Enable to quickly test settings on a short clip before processing the full video (recommended). If using the data visualizations, disable.",
                         )
@@ -504,6 +522,7 @@ with gr.Blocks(title="Promptable Content Moderation") as app:
             cols_input,
             test_mode_input,
             test_duration_input,
+            magnify_factor,
         ],
         outputs=[video_output, json_output],
     )

@@ -711,6 +711,43 @@ def draw_ad_boxes(frame, detected_objects, detect_keyword, model, box_style="cen
                             except Exception as e:
                                 print(f"Error processing individual point: {str(e)}")
                                 print(f"Point data: {point}")
+                elif box_style == "magnify":
+                    # Calculate the center point of the detection
+                    center_x = (x1 + x2) // 2
+                    center_y = (y1 + y2) // 2
+                    
+                    # Calculate original dimensions
+                    orig_width = x2 - x1
+                    orig_height = y2 - y1
+                    
+                    # Calculate new dimensions using magnify_factor parameter
+                    magnify_factor = getattr(model, "magnify_factor", 2.0)  # Default to 2x if not specified
+                    new_width = int(orig_width * magnify_factor)
+                    new_height = int(orig_height * magnify_factor)
+                    
+                    # Calculate new coordinates ensuring they stay within frame bounds
+                    new_x1 = max(0, center_x - new_width // 2)
+                    new_y1 = max(0, center_y - new_height // 2)
+                    new_x2 = min(width - 1, new_x1 + new_width)
+                    new_y2 = min(height - 1, new_y1 + new_height)
+                    
+                    # Extract the original ROI
+                    roi = frame[y1:y2, x1:x2]
+                    
+                    # Resize the ROI using the magnify_factor
+                    enlarged_roi = cv2.resize(roi, (new_x2 - new_x1, new_y2 - new_y1))
+                    
+                    # Create a mask for smooth blending
+                    mask = np.zeros((new_y2 - new_y1, new_x2 - new_x1), dtype=np.float32)
+                    cv2.rectangle(mask, (0, 0), (new_x2 - new_x1, new_y2 - new_y1), 1, -1)
+                    mask = cv2.GaussianBlur(mask, (21, 21), 11)
+                    
+                    # Blend the enlarged ROI with the original frame
+                    for c in range(3):  # For each color channel
+                        frame[new_y1:new_y2, new_x1:new_x2, c] = (
+                            frame[new_y1:new_y2, new_x1:new_x2, c] * (1 - mask) +
+                            enlarged_roi[:, :, c] * mask
+                        )
 
         except Exception as e:
             print(f"Error drawing {box_style} style box: {str(e)}")
@@ -1002,6 +1039,7 @@ def process_video(
     grid_rows=1,
     grid_cols=1,
     box_style="censor",
+    magnify_factor=2.0,
 ):
     """Process a video to detect and visualize specified objects."""
     try:
@@ -1011,6 +1049,9 @@ def process_video(
         # Load model
         print("Loading Moondream model...")
         model, tokenizer = load_moondream()
+        
+        # Add magnify_factor to model dict for use in draw_ad_boxes
+        model.magnify_factor = magnify_factor
 
         # Get video properties
         props = get_video_properties(video_path)
@@ -1183,7 +1224,7 @@ def main():
     parser.add_argument(
         "--box-style",
         choices=["censor", "bounding-box", "hitmarker", "sam", "sam-fast", "fuzzy-blur", 
-                "pixelated-blur", "intense-pixelated-blur", "obfuscated-pixel"],
+                "pixelated-blur", "intense-pixelated-blur", "obfuscated-pixel", "magnify"],
         default="censor",
         help="Style of detection visualization (default: censor)",
     )
@@ -1223,6 +1264,7 @@ def main():
             grid_rows=args.rows,
             grid_cols=args.cols,
             box_style=args.box_style,
+            magnify_factor=args.magnify_factor,
         )
         if output_path:
             success_count += 1
