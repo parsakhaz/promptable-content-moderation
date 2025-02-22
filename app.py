@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # import spaces first
-# import spaces
+import spaces
 import gradio as gr
 import os
 from main import load_moondream, process_video, load_sam_model
@@ -27,7 +27,7 @@ print(f"CUDA device: {torch.cuda.get_device_name(torch.cuda.current_device())}")
 model, tokenizer = None, None
 
 # Uncomment for Hugging Face Spaces
-# @spaces.GPU(duration=120)
+@spaces.GPU(duration=120)
 def process_video_file(
     video_file, target_object, box_style, ffmpeg_preset, grid_rows, grid_cols, test_mode, test_duration, magnify_factor
 ):
